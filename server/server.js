@@ -25,7 +25,7 @@ app.get("/", (req, res) => {
 	res.send("api working");
 });
 
-app.post("/clerk", express.json(), clerkWehooks);
+// app.post("/clerk", express.json(), clerkWehooks);
 
 app.listen(PORT, () => {
 	console.log("server started! at port", PORT);
