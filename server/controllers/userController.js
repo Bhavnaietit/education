@@ -56,7 +56,7 @@ export const purchaseCourse = async (req, res) => {
 		const newPurchase = await Purchase.create(purchaseData);
 		// stripe getway
 		const stripeInstance = new Stripe(process.env.STRIPE_SECRET_KEY);
-		const currency = process.env.CURRENCY;
+		const currency = process.env.CURRENCY.toLowerCase();
 
 		// line items
 		const line_items = [
@@ -73,7 +73,7 @@ export const purchaseCourse = async (req, res) => {
 		];
 
 		const session = await stripeInstance.checkout.sessions.create({
-			success_url: `${origin}/loading/my-enrollments`,
+			success_url: `${origin}/my-enrollments`,
 			cancel_url: `${origin}/`,
 			line_items: line_items,
 			mode: "payment",
@@ -106,7 +106,7 @@ export const updateUserCourseProgress = async (req, res) => {
 			progressData.lectureCompleted.push(lectureId);
 			await progressData.save();
 		} else {
-			await progressData.create({
+			await CourseProgress.create({
 				userId,
 				courseId,
 				lectureCompleted: [lectureId],
@@ -122,14 +122,14 @@ export const updateUserCourseProgress = async (req, res) => {
 export const getUserCourseProgress = async (req, res) => {
 	try {
 		const userId = req.auth().userId;
-		const { courseId, lectureId } = req.body;
+		const { courseId} = req.body;
 		const progressData = await CourseProgress.findOne({ userId, courseId });
 		res.json({ success: true, progressData });
 	} catch (error) {
 		res.json({ success: false, message: error.message });
 	}
 };
-
+// update rating
 export const addUserRating = async (req, res) => {
 	const userId = req.auth().userId;
 	const { courseId, rating } = req.body;
