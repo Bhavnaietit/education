@@ -2,12 +2,11 @@ import React, { useEffect, useRef, useState, useContext } from "react";
 import uniqid from "uniqid";
 import Quill from "quill";
 import { assets } from "../../assets/assets";
-// import React, { useContext, useEffect, useState } from "react";
 // import { assets, dummyDashboardData } from "../../assets/assets";
 import { AppContext } from "../../context/AppContext";
 import { toast } from "react-toastify";
 import axios from "axios";
-// import Loading from "../../Components/student/Loading";
+import Loading from "../../Components/student/Loading";
 
 const AddCourse = () => {
 	const quillRef = useRef(null);
@@ -29,7 +28,6 @@ const AddCourse = () => {
 	});
 	const addCourse = async () => {
 		console.log(courseTitle, coursePrice, discount, chapters);
-		console.log(allCourses[0]);
 		const newCourse = {
 			courseContent: chapters,
 			educator: uniqid(),
@@ -144,7 +142,7 @@ const AddCourse = () => {
 				formData,
 				{ headers: { Authorization: `Bearer ${token}` } }
 			);
-
+console.log(data.success)
 			if (data.success) {
 				toast.success(data.message);
 				setCourseTitle('');
@@ -159,7 +157,6 @@ const AddCourse = () => {
 		} catch (error) {
 			toast.error(error.message);
 		}
-		e.preventDefault();
 	};
 	useEffect(() => {
 		if (!quillRef.current && editorRef.current) {
@@ -167,6 +164,7 @@ const AddCourse = () => {
 				theme: "snow",
 			});
 		}
+		
 	}, [allCourses]);
 	return (
 		<div className="h-screen overflow-scroll flex flex-col items-start justify-between md:p-8 md:pb-0 p-4 pt-8 pb-0">
@@ -174,7 +172,6 @@ const AddCourse = () => {
 				className="flex flex-col w-fit"
 				onSubmit={(e) => {
 					handleSubmit();
-					addCourse();
 				}}>
 				<div className="flex flex-col p-4">
 					<label className="text-gray-500">Course Title</label>
@@ -190,18 +187,10 @@ const AddCourse = () => {
 				</div>
 				<div className="flex flex-col p-4">
 					<label className="text-gray-500">Course Description</label>
-					{/* <div ref={editorRef} onChange={() => {
-						console.log(e)
-					}}></div> */}
-					<textarea
-						className="border border-gray-400 rounded-sm h-20 p-2"
-						placeholder="Type here"
-						value={description}
-						onChange={(e) => {
-							console.log(e.target.value);
-							setDescription(e.target.value);
-							required;
-						}}></textarea>
+					<div ref={editorRef} onChange={() => {
+						
+					}}></div>
+					
 				</div>
 				<div className="flex justify-between">
 					<div className="flex flex-col p-4">

@@ -46,6 +46,7 @@ export const AppContextProvider = (props) => {
 			const { data } = await axios.get(backendUrl + "/api/user/data", {
 				headers: { Authorization: `Bearer ${token}` },
 			});
+			console.log(data)
 			if (data.success) {
 				setUserData(data.user);
 			} else {
@@ -125,7 +126,7 @@ export const AppContextProvider = (props) => {
 
 	useEffect(() => {
 		fetchAllCourses();
-	
+	     
 	}, []);
 
 	const logToken = async () => {

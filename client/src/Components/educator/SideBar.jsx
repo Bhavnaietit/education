@@ -22,8 +22,8 @@ const SideBar = () => {
 			icon: assets.my_course_icon,
 		},
 		{
-			name: "Student Enrolled",
-			path: "/educator/student-enrolled",
+			name: "enrolled-students",
+			path: "/educator/enrolled-students",
 			icon: assets.person_tick_icon,
 		},
 	];

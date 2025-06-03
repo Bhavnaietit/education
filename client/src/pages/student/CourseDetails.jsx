@@ -18,16 +18,17 @@ const CourseDetails = () => {
 		currency,
 		userData,
 		backendUrl,
+		getToken,
 	} = useContext(AppContext);
 	const [opneSection, setOpenSection] = useState({});
 
 	const [courseData, setCourseData] = useState(null);
 	const [isEnrolled, setIsEnrolled] = useState(false);
-	const { allCourses } = useContext(AppContext);
 	const [playerData, setPlayerData] = useState(null);
 	const fetchCourseData = async () => {
 		try {
 			const { data } = await axios.get(backendUrl + "/api/course/" + courseId);
+		
 			if (data.success) {
 				setCourseData(data.courseData);
 			} else {
@@ -48,16 +49,17 @@ const CourseDetails = () => {
 			if (!userData) {
 				return toast.warn("Login to Enroll");
 			}
-			if (isAreadyEnrolled) {
+			if (isEnrolled) {
 				return toast.warn("You already enrolled");
 			}
+			
 			const token = getToken();
 			const { data } = await axios.post(backendUrl + '/api/user/purchase', { courseId: courseData._id }, { headers: { Authorization: `Bearer ${token}` } });
-
 			if (data.success) {
 				const { session_url } = data;
 				window.location.replace(session_url);
 			} else {
+				console.log(userData,data);
 				toast.error(data.message);
 			}
 		} catch (error) {
@@ -67,9 +69,12 @@ const CourseDetails = () => {
 	useEffect(() => {
 		fetchCourseData();
 	}, []);
+
 	useEffect(() => {
+		
 		if (userData && courseData) {
-			setIsEnrolled(userData.enrolledCourse.includes(courseData._id));
+			// setIsEnrolled(true);
+			setIsEnrolled(userData.enrolledCourses.includes(courseData._id))
 		}
 	}, [userData, courseData]);
 
@@ -127,7 +132,7 @@ const CourseDetails = () => {
 					<div className="pt-8 text-gray-800">
 						<h2 className="text-xl font-semibold">Course Structure</h2>
 						<div className="pt-5">
-							{courseData.courseContent.map((chapter, idx) => {
+							{  courseData.courseContent.map((chapter, idx) => {
 								return (
 									<div
 										key={idx}

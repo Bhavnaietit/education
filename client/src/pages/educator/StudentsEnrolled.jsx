@@ -6,20 +6,21 @@ import { toast } from "react-toastify";
 import axios from "axios";
 
 const StudentsEnrolled = () => {
+	
 	const { backendUrl, isEducator, getToken } = useContext(AppContext);
-	const [enrolledCourses, setEnrolledCourses] = useState(null);
+	const [enrolledStudents, setEnrolledStudents] = useState(null);
 	const fetEnrolledStudents = async () => {
 		try {
 			const token = await getToken();
 			const { data } = await axios.get(
-				backendUrl + "/api/educator/student-enrolled",
+				backendUrl + "/api/educator/enrolled-students",
 				{
 					headers: { Authorization: `Bearer ${token}` },
 				}
 			);
-
+			
 			if (data.success) {
-				setEnrolledCourses(data.enrolledCourses);
+				setEnrolledStudents(data.enrolledStudents);
 			} else {
 				toast.error(data.message);
 			}
@@ -29,8 +30,9 @@ const StudentsEnrolled = () => {
 	};
 	useEffect(() => {
 			fetEnrolledStudents();
-	}, [enrolledCourses,isEducator]);
-	return enrolledCourses ? (
+	}, [isEducator]);
+	
+	return enrolledStudents ? (
 		<div className="h-screen flex flex-col items-start justify-between md:p-8 md:pb-0 p-4 pt-8 pb-0">
 			<div className="w-full">
 				<h1 className="pb-4 text-lg font-medium">Students Enrolled</h1>
@@ -51,7 +53,7 @@ const StudentsEnrolled = () => {
 							</tr>
 						</thead>
 						<tbody className="text-sm text-gray-500">
-              {enrolledCourses.map((item, id) => {
+              {enrolledStudents.map((item, id) => {
                 console.log(item)
 								return (
 									<tr key={id} className="border-b border-gray-500/20">

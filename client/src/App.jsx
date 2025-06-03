@@ -18,9 +18,9 @@ import {ToastContainer,toast} from 'react-toastify'
 const App = () => {
 	const isEducatorRoute=useMatch("/educator/*")
   return (
-	  <div className="text-default min-h-screen bg-white">
-		  <ToastContainer/>
-			{!isEducatorRoute&& <Navbar/>}
+		<div className="text-default min-h-screen bg-white">
+			<ToastContainer />
+			{!isEducatorRoute && <Navbar />}
 			<Routes>
 				<Route path="/" element={<Home />} />
 				<Route path="/course-list" element={<CoursesList />} />
@@ -34,7 +34,7 @@ const App = () => {
 					<Route path="" element={<Dashboard />} />
 					<Route path="add-course" element={<AddCourse />} />
 					<Route path="my-courses" element={<MyCourses />} />
-					<Route path="student-enrolled" element={<StudentsEnrolled />} />
+					<Route path="enrolled-students" element={<StudentsEnrolled />} />
 				</Route>
 			</Routes>
 		</div>

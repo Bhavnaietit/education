@@ -15,7 +15,6 @@ export const clerkWehooks = async (req, res) => {
 			"svix-signature": req.headers["svix-signature"],
 		});
 		const { data, type } = req.body;
-		console.log(data);
 		switch (type) {
 			case "user.created": {
 				const userData = {
@@ -58,18 +57,18 @@ export const clerkWehooks = async (req, res) => {
 const stripeInstance = new Stripe(process.env.STRIPE_SECRET_KEY);
 export const stripeWebhooks = async (req, res) => {
 	const sig = request.headers["stripe-signature"];
-
 	let event;
 
 	try {
 		event = Stripe.webhooks.constructEvent(
-			request.body,
+			req.body,
 			sig,
 			process.env.STRIPE_WEBHOOK_SECRET
 		);
 	} catch (err) {
-		response.status(400).send(`Webhook Error: ${err.message}`);
+		res.status(400).send(`Webhook Error: ${err.message}`);
 	}
+	
 
 	// Handle the event
 	switch (event.type) {
@@ -87,7 +86,6 @@ export const stripeWebhooks = async (req, res) => {
 			const courseData = await Course.findById(
 				purchaseData.courseId.toString()
 			);
-
 			courseData.enrolledStudents.push(userData);
 			await courseData.save();
 
@@ -95,7 +93,7 @@ export const stripeWebhooks = async (req, res) => {
 			await userData.save();
 
 			purchaseData.status = "completed";
-			console.log(purchaseData)
+
 			await purchaseData.save();
 
 			break;
@@ -109,7 +107,7 @@ export const stripeWebhooks = async (req, res) => {
 
 			const { purchaseId } = session.data[0].metadata;
 			const purchaseData = await Purchase.findById(purchaseId);
-
+		
 			purchaseData.status = "failed";
 			await purchaseData.save();
 
@@ -121,5 +119,5 @@ export const stripeWebhooks = async (req, res) => {
 	}
 
 	// Return a response to acknowledge receipt of the event
-	response.json({ received: true });
+	res.json({ received: true });
 };

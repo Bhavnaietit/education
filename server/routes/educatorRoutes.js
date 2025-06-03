@@ -11,7 +11,7 @@ educatorRouter.get("/update-role", updateRoleToEducator);
 educatorRouter.post("/add-course", upload.single('image'), protectEducator, addCourse);
 
 // // get all courses
-educatorRouter.get("/courses", protectEducator, getEducatorCourses);
+educatorRouter.get("/my-courses", protectEducator, getEducatorCourses);
 
 // // dashboad data
 educatorRouter.get("/dashboard", protectEducator, educatorDashboardData);

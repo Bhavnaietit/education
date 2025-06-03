@@ -6,7 +6,9 @@ import CourseProgress from "../models/CourseProgress.js";
 //  get user
 export const getUserData = async (req, res) => {
 	try {
+		
 		const userId = req.auth().userId;
+		// console.log(req);
 		const user = await User.findById(userId);
 		if (!user) {
 			return res.json({ success: false, message: "User Not Found" });
@@ -20,6 +22,7 @@ export const getUserData = async (req, res) => {
 // get user enrolled course with lect links
 export const userEnrolledCoures = async (req, res) => {
 	try {
+		
 		const userId = req.auth().userId;
 		
 		const userData = await User.findById(userId).populate("enrolledCourses");
@@ -33,15 +36,20 @@ export const userEnrolledCoures = async (req, res) => {
 	}
 };
 
+
 // PUCHASE COURES
 export const purchaseCourse = async (req, res) => {
 	try {
 		const { origin } = req.headers;
+		
 		const userId = req.auth().userId;
-		const { courseId } = req.body;
-		console.log(courseId,userId);
+	
+		const  courseId  = req.body.courseId;
+		
 		const userData = await User.findById(userId);
 		const courseData = await Course.findById(courseId);
+
+
 		if (!userData || !courseData) {
 			return res.json({ success: false, message: "Data Not Found" });
 		}
@@ -73,7 +81,7 @@ export const purchaseCourse = async (req, res) => {
 		];
 
 		const session = await stripeInstance.checkout.sessions.create({
-			success_url: `${origin}/my-enrollments`,
+			success_url: `${origin}/loading/my-enrollments`,
 			cancel_url: `${origin}/`,
 			line_items: line_items,
 			mode: "payment",
@@ -122,12 +130,14 @@ export const updateUserCourseProgress = async (req, res) => {
 export const getUserCourseProgress = async (req, res) => {
 	try {
 		const userId = req.auth().userId;
-		const { courseId} = req.body;
+		const { courseId } = req.body;
+		console.log(courseId)
 		const progressData = await CourseProgress.findOne({ userId, courseId });
 		res.json({ success: true, progressData });
 	} catch (error) {
 		res.json({ success: false, message: error.message });
 	}
+	
 };
 // update rating
 export const addUserRating = async (req, res) => {

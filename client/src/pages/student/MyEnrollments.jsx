@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { AppContext } from "../../context/AppContext";
 import Footer from "../../Components/student/Footer";
-// import {Line} from 'rc-progressData'
+import {Line} from 'rc-progress'
 import { toast } from "react-toastify";
 import axios from "axios";
 import { useEffect } from "react";
@@ -18,20 +18,24 @@ const MyEnrollments = () => {
 		calNumOfLectures,
 	} = useContext(AppContext);
 	const [progressData, setProgressData] = useState([]);
+
 	const getCourseProgress = async () => {
 		try {
 			const token = await getToken();
-			const tempProgressArray = await Promise.all(enrolledCourses.map(async (course) => {
+			const tempProgressArray = await Promise.all(enrolledCourses);
+			const progressData=tempProgressArray.map( async(course) => {
+				console.log(course)
 				const { data } = await axios.post(`${backendUrl}/api/user/get-course-progress`, { courseId: course._id }, {
 					headers: {
-					Authorization:`Bearer ${token}`
+						Authorization: `Bearer ${token}`
 					}
-				})
-				let totalLectures = calNumOfLectures(course);
+				});
+	
+				let totalLectures = calNumOfLectures(data);
 				const lectureCompleted = data.progressData ? data.progressData.lectureCompleted.length : 0;
 				return { totalLectures, lectureCompleted };
-			}))
-setProgressData(tempProgressArray)
+			});
+			setProgressData(progressData);
 		} catch (error) {
 			toast.error(error.message);
 		}
@@ -92,6 +96,7 @@ setProgressData(tempProgressArray)
                     }} className="px-3 sm:px-5 py-1.5 sm:py-2 rounded bg-blue-500 max-sm:text-xs text-white">
 											{progressData[idx] && progressData[idx].lectureCompleted==progressData[idx].totalLectures?'Completed':'On Going'}
 										</button>
+										
 									</td>
 								</tr>
 							);
