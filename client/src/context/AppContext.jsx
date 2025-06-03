@@ -46,7 +46,7 @@ export const AppContextProvider = (props) => {
 			const { data } = await axios.get(backendUrl + "/api/user/data", {
 				headers: { Authorization: `Bearer ${token}` },
 			});
-			console.log(data)
+			
 			if (data.success) {
 				setUserData(data.user);
 			} else {
@@ -58,7 +58,7 @@ export const AppContextProvider = (props) => {
 	};
 	// function to cal avg rating
 	const calculateRating = (course) => {
-		// console.log(course)
+		
 		if (course.courseRatings.length === 0) {
 			return 0;
 		}
@@ -91,7 +91,7 @@ export const AppContextProvider = (props) => {
 
 	// cal number of lecture
 	const calNumOfLectures = (course) => {
-		// console.log(course);
+
 		let totalLectures = 0;
 		course.courseContent.forEach((chapter) => {
 			if (Array.isArray(chapter.chapterContent)) {
@@ -129,12 +129,12 @@ export const AppContextProvider = (props) => {
 	     
 	}, []);
 
-	const logToken = async () => {
-		console.log(await getToken());
-	}
+	// const logToken = async () => {
+		// .log(await getToken());
+	// }
 	useEffect(() => {
 		if (user) {
-			logToken();
+			// logToken();
 			fetchUserEnrolledCourses();
 			fetchUserData();
 		}
