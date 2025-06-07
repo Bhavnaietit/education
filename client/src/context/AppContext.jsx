@@ -17,7 +17,7 @@ export const AppContextProvider = (props) => {
 
 	const [allCourses, setAllCourses] = useState([]);
 	const [testinomials, setTestinomials] = useState([]);
-	const [isEducator, setIsEducator] = useState(true);
+	const [isEducator, setIsEducator] = useState(false);
 	const [enrolledCourses, setEnrolledCourses] = useState([]);
 	const [userData, setUserData] = useState(null);
 	// fet all corses
@@ -66,6 +66,7 @@ export const AppContextProvider = (props) => {
 		course.courseRatings.forEach((rating) => {
 			totalRating += rating.rating;
 		});
+	
 		return Math.floor(totalRating / course.courseRatings.length);
 	};
 	// course chap time
@@ -86,12 +87,14 @@ export const AppContextProvider = (props) => {
 				time += lecture.lectureDuration;
 			});
 		});
-		return humanizeDuration(time * 60 * 1000, { units: ["h", "m"] });
+		return humanizeDuration(Math.floor(time * 60 * 1000), {
+			units: ["h", "m"],
+		});
 	};
 
 	// cal number of lecture
 	const calNumOfLectures = (course) => {
-
+console.log(course)
 		let totalLectures = 0;
 		course.courseContent.forEach((chapter) => {
 			if (Array.isArray(chapter.chapterContent)) {
@@ -126,15 +129,14 @@ export const AppContextProvider = (props) => {
 
 	useEffect(() => {
 		fetchAllCourses();
-	     
 	}, []);
 
-	// const logToken = async () => {
-		// .log(await getToken());
-	// }
+	const logToken = async () => {
+		console.log(await getToken());
+	}
 	useEffect(() => {
 		if (user) {
-			// logToken();
+			logToken();
 			fetchUserEnrolledCourses();
 			fetchUserData();
 		}

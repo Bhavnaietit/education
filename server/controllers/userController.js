@@ -99,13 +99,15 @@ export const purchaseCourse = async (req, res) => {
 // UPDATE USER COURSE PROGRESS
 export const updateUserCourseProgress = async (req, res) => {
 	try {
+		
 		const userId = req.auth().userId;
-		const { courseId, lectureId } = req.body;
+		const { courseId,lectureId} = req.body;
 
 		const progressData = await CourseProgress.findOne({ userId, courseId });
 
 		if (progressData) {
-			if (progressData.lectureCompleted.includes(lectureId)) {
+			console.log(progressData,lectureId)
+			if (lectureId !=null && progressData.lectureCompleted.includes(lectureId)) {
 				return res.json({
 					success: true,
 					message: "Lecture Already comlpleted",
@@ -121,6 +123,7 @@ export const updateUserCourseProgress = async (req, res) => {
 			});
 			res.json({ success: true, meassage: "Progress Updated" });
 		}
+		// res.json({ success: true, meassage: "Progress Updated" });
 	} catch (error) {
 		return res.json({ success: false, meassage: error.message });
 	}
@@ -131,7 +134,7 @@ export const getUserCourseProgress = async (req, res) => {
 	try {
 		const userId = req.auth().userId;
 		const { courseId } = req.body;
-		console.log(courseId)
+		console.log(userId,courseId)
 		const progressData = await CourseProgress.findOne({ userId, courseId });
 		res.json({ success: true, progressData });
 	} catch (error) {

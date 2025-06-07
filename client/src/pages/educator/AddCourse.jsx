@@ -120,11 +120,12 @@ const AddCourse = () => {
 			);
 		}
 	};
-	const handleSubmit = async (e) => {
+	const handleSubmit = async () => {
 		try {
-			e.preventDefault();
+			
 			if (!image) {
 				toast.error("Thumbnail Not Selected");
+				return;
 			}
 			const courseData = {
 				courseTitle,
@@ -134,6 +135,7 @@ const AddCourse = () => {
 				courseContent: chapters,
 			};
 			const formData = new FormData();
+			console.log(formData)
 			formData.append("courseData", JSON.stringify(courseData));
 			formData.append("image", image);
 			const token = await getToken();
@@ -142,7 +144,7 @@ const AddCourse = () => {
 				formData,
 				{ headers: { Authorization: `Bearer ${token}` } }
 			);
-console.log(data.success)
+			console.log(data.success);
 			if (data.success) {
 				toast.success(data.message);
 				setCourseTitle('');
@@ -171,7 +173,9 @@ console.log(data.success)
 			<form
 				className="flex flex-col w-fit"
 				onSubmit={(e) => {
+					e.preventDefault();
 					handleSubmit();
+					
 				}}>
 				<div className="flex flex-col p-4">
 					<label className="text-gray-500">Course Title</label>
@@ -187,10 +191,7 @@ console.log(data.success)
 				</div>
 				<div className="flex flex-col p-4">
 					<label className="text-gray-500">Course Description</label>
-					<div ref={editorRef} onChange={() => {
-						
-					}}></div>
-					
+					<div ref={editorRef} onChange={() => {}}></div>
 				</div>
 				<div className="flex justify-between">
 					<div className="flex flex-col p-4">
@@ -377,7 +378,7 @@ console.log(data.success)
 
 								<button
 									type="button"
-									className="w-full bg-blue-400 text-white px-4 py-2 rounded"
+									className="w-full  flex self-center bg-blue-400 text-white px-4 py-2 rounded"
 									onClick={() => {
 										addLecture();
 									}}>
@@ -385,7 +386,7 @@ console.log(data.success)
 								</button>
 								<img
 									onClick={() => {
-										setShowPopup(false);
+										setShowPopup(true);
 									}}
 									src={assets.cross_icon}
 									className="absolute top-4 right-4 w-4 cursor-pointer"
@@ -394,11 +395,16 @@ console.log(data.success)
 						</div>
 					)}
 				</div>
-				<button
-					type="submit"
-					className="w-max py-2.5 px-8 rounded my-4 bg-black text-gray-100">
-					ADD
-				</button>
+				<div className="flex justify-center">
+					<button
+						type="submit"
+						onClick={() => {
+							addCourse();
+						}}
+						className="w-max py-2.5 px-8 rounded my-4 bg-black text-gray-100">
+						ADD
+					</button>
+				</div>
 			</form>
 		</div>
 	);

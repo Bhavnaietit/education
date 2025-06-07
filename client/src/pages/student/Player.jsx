@@ -14,11 +14,8 @@ const Player = () => {
 	const { courseId } = useParams();
 
 	const {
-		calculateRating,
+		
 		calChapTime,
-		calCourseDurTime,
-		calNumOfLectures,
-		currency,
 		enrolledCourses,
 		fetchUserEnrolledCourses,
 		backendUrl,
@@ -33,7 +30,7 @@ const Player = () => {
 	const [initialRating, setInitialRating] = useState(0);
 
 	const getCourseData = async () => {
-		enrolledCourses.map((course) => {
+		 await enrolledCourses.map((course) => {
 			if (course._id === courseId) {
 				setCourseData(course);
 				course.courseRatings.map((item) => {
@@ -63,6 +60,7 @@ const Player = () => {
 				{ courseId, lectureId },
 				{ headers: { Authorization: `Bearer ${token}` } }
 			);
+			console.log(data)
 
 			if (data.success) {
 				toast.success(data.message);
@@ -77,7 +75,7 @@ const Player = () => {
 	const getCourseProgress = async () => {
 		try {
 			const token = await getToken();
-			const { data } = await axios.post(
+			const { data } = await axios.get(
 				backendUrl + `/api/user/get-course-progress`,
 				{ courseId },
 				{ headers: { Authorization: `Bearer ${token}` } }

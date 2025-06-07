@@ -22,6 +22,7 @@ const App = () => {
 			<ToastContainer />
 			{!isEducatorRoute && <Navbar />}
 			<Routes>
+				{/* get-course-progress */}
 				<Route path="/" element={<Home />} />
 				<Route path="/course-list" element={<CoursesList />} />
 				<Route path="/course-list/:input" element={<CoursesList />} />

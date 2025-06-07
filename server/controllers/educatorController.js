@@ -4,16 +4,21 @@ import { v2 as cloudinary } from "cloudinary";
 import Purchase from "../models/Purchase.js";
 import User from '../models/User.js'
 import { purchaseCourse } from "./userController.js";
+import upload from "../configs/multer.js";
 
 // update role to educator
 export const updateRoleToEducator = async (req, res) => {
 	try {
+		
 		const userId = req.auth().userId;
+		console.log(req.auth());
 		await clerkClient.users.updateUserMetadata(userId, {
 			publicMetadata: {
 				role: "educator",
 			},
 		});
+	
+		
 		res.json({ success: true, message: "You can publish a course now" });
 	} catch (error) {
 		res.json({ success: false, message: error.message });
@@ -23,8 +28,11 @@ export const updateRoleToEducator = async (req, res) => {
 // // add course
 export const addCourse = async (req, res) => {
 	try {
+		console.log(req);
 		const { courseData } = req.body;
 		const imageFile = req.file;
+		console.log(imageFile)
+		console.log(req.auth);
 		const educatorId = req.auth().userId;
 
 		if (!imageFile) {
@@ -39,6 +47,7 @@ export const addCourse = async (req, res) => {
 
 		res.json({ success: true, message: "Course Added" });
 	} catch (error) {
+		
 		res.json({ success: false, message: error.message });
 	}
 };
@@ -58,6 +67,7 @@ export const getEducatorCourses = async (req, res) => {
 export const educatorDashboardData = async (req, res) => {
 	try {
 		const educator = req.auth().userId;
+		console.log(educator)
 		const courses = await Course.find({ educator });
 		const totalCourses = courses.length;
 		const courseIds = courses.map((course) => course._id);

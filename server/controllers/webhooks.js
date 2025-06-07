@@ -58,7 +58,7 @@ const stripeInstance = new Stripe(process.env.STRIPE_SECRET_KEY);
 export const stripeWebhooks = async (req, res) => {
 	const sig = request.headers["stripe-signature"];
 	let event;
-
+	console.log(event);
 	try {
 		event = Stripe.webhooks.constructEvent(
 			req.body,
@@ -73,6 +73,7 @@ export const stripeWebhooks = async (req, res) => {
 	// Handle the event
 	switch (event.type) {
 		case "payment_intent.succeeded": {
+			
 			const paymentIntent = event.data.object;
 			const paymentIntentId = paymentIntent.id;
 			const session = await stripeInstance.checkout.session.list({

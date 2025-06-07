@@ -23,15 +23,16 @@ const MyEnrollments = () => {
 		try {
 			const token = await getToken();
 			const tempProgressArray = await Promise.all(enrolledCourses);
-			const progressData=tempProgressArray.map( async(course) => {
+			console.log(tempProgressArray)
+			const progressData = tempProgressArray.map(async (course) => {
 				console.log(course)
 				const { data } = await axios.post(`${backendUrl}/api/user/get-course-progress`, { courseId: course._id }, {
 					headers: {
 						Authorization: `Bearer ${token}`
 					}
 				});
-	
-				let totalLectures = calNumOfLectures(data);
+				
+				let totalLectures = calNumOfLectures(data.progressData);
 				const lectureCompleted = data.progressData ? data.progressData.lectureCompleted.length : 0;
 				return { totalLectures, lectureCompleted };
 			});
@@ -68,6 +69,7 @@ const MyEnrollments = () => {
 					</thead>
 					<tbody>
 						{enrolledCourses.map((course, idx) => {
+							
 							return (
 								<tr key={idx} className="border-b border-gray-500/20">
 									<td className="md:px-4 pl-2 md:pl-4 py-3 flex items-center space-x-3">
@@ -79,15 +81,16 @@ const MyEnrollments = () => {
 											<p className="mb-1 max-sm:text-sm">
 												{course.courseTitle}
                       </p>
-                      <Line strokeWidth={2} percent={progressData[idx] && (progressData[idx].lectureCompleted / progressData[idx].totalLectures)*100 } className="bg-gray-300 rounded-full"></Line>
+                      {/* <Line strokeWidth={2} percent={progressData[idx] && (progressData[idx].lectureCompleted / progressData[idx].totalLectures)*100 } className="bg-gray-300 rounded-full"></Line> */}
 										</div>
 									</td>
 									<td className="px-4 py-3 max-sm:hidden">
 										{calCourseDurTime(course)}
 									</td>
 									<td className="px-4 py-3 max-sm:hidden">
-										{progressData[idx] &&
-											` ${progressData[idx].lectureCompleted}/${progressData[idx].totalLectures}`}
+										{80}{" "}
+										{/* {progressData[idx] &&
+											` ${progressData[idx].lectureCompleted}/${progressData[idx].totalLectures}`} */}
 										<span>Lectures</span>
 									</td>
 									<td className="px-4 py-3 max-sm:text-right">
