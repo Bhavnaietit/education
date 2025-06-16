@@ -3,15 +3,13 @@ import Course from "../models/Course.js";
 import { v2 as cloudinary } from "cloudinary";
 import Purchase from "../models/Purchase.js";
 import User from '../models/User.js'
-import { purchaseCourse } from "./userController.js";
-import upload from "../configs/multer.js";
+
 
 // update role to educator
 export const updateRoleToEducator = async (req, res) => {
 	try {
 		
 		const userId = req.auth().userId;
-		console.log(req.auth());
 		await clerkClient.users.updateUserMetadata(userId, {
 			publicMetadata: {
 				role: "educator",
@@ -28,11 +26,9 @@ export const updateRoleToEducator = async (req, res) => {
 // // add course
 export const addCourse = async (req, res) => {
 	try {
-		console.log(req);
+		
 		const { courseData } = req.body;
 		const imageFile = req.file;
-		console.log(imageFile)
-		console.log(req.auth);
 		const educatorId = req.auth().userId;
 
 		if (!imageFile) {
@@ -66,8 +62,9 @@ export const getEducatorCourses = async (req, res) => {
 // GET Educator Dshboard data (total Earning,enrolled students ,No. of Courses)
 export const educatorDashboardData = async (req, res) => {
 	try {
+	
 		const educator = req.auth().userId;
-		console.log(educator)
+	
 		const courses = await Course.find({ educator });
 		const totalCourses = courses.length;
 		const courseIds = courses.map((course) => course._id);
