@@ -94,7 +94,7 @@ export const AppContextProvider = (props) => {
 
 	// cal number of lecture
 	const calNumOfLectures = (course) => {
-console.log(course)
+
 		let totalLectures = 0;
 		course.courseContent.forEach((chapter) => {
 			if (Array.isArray(chapter.chapterContent)) {
@@ -132,7 +132,7 @@ console.log(course)
 	}, []);
 
 	const logToken = async () => {
-		console.log(await getToken());
+		// console.log(await getToken());
 	}
 	useEffect(() => {
 		if (user) {
