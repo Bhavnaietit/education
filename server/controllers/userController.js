@@ -3,6 +3,7 @@ import Course from "../models/Course.js";
 import Purchase from "../models/Purchase.js";
 import Stripe from "stripe";
 import CourseProgress from "../models/CourseProgress.js";
+
 //  get user
 export const getUserData = async (req, res) => {
 	try {
@@ -72,7 +73,7 @@ export const purchaseCourse = async (req, res) => {
 		const line_items = [
 			{
 				price_data: {
-					currency,
+					currency:currency,
 					product_data: {
 						name: courseData.courseTitle,
 					},
@@ -81,7 +82,7 @@ export const purchaseCourse = async (req, res) => {
 				quantity: 1,
 			},
 		];
-
+		
 		const session = await stripeInstance.checkout.sessions.create({
 			success_url: `${origin}/my-enrollments`,
 			cancel_url: `${origin}/`,
@@ -97,6 +98,7 @@ export const purchaseCourse = async (req, res) => {
 		return res.json({ success: false, message: error.message });
 	}
 };
+
 
 // UPDATE USER COURSE PROGRESS
 export const updateUserCourseProgress = async (req, res) => {
