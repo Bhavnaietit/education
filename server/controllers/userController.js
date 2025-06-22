@@ -24,12 +24,13 @@ export const userEnrolledCoures = async (req, res) => {
 	try {
 		
 		const userId = req.auth().userId;
-		
+		console.log(userId);
 		const userData = await User.findById(userId).populate("enrolledCourses");
 	
 		if (!userData) {
 			res.json({ success: false, message: "User Not Enrolled" });
 		}
+		console.log(userData.enrolledCourses)
 		res.json({ success: true, enrolledCourses: userData.enrolledCourses });
 	} catch (error) {
 		res.json({ success: false, message: error.message });
@@ -48,7 +49,7 @@ export const purchaseCourse = async (req, res) => {
 		
 		const userData = await User.findById(userId);
 		const courseData = await Course.findById(courseId);
-
+		
 
 		if (!userData || !courseData) {
 			return res.json({ success: false, message: "Data Not Found" });
@@ -61,6 +62,7 @@ export const purchaseCourse = async (req, res) => {
 				(courseData.discount * courseData.coursePrice) / 100
 			).toFixed(2),
 		};
+
 		const newPurchase = await Purchase.create(purchaseData);
 		// stripe getway
 		const stripeInstance = new Stripe(process.env.STRIPE_SECRET_KEY);
@@ -81,7 +83,7 @@ export const purchaseCourse = async (req, res) => {
 		];
 
 		const session = await stripeInstance.checkout.sessions.create({
-			success_url: `${origin}/loading/my-enrollments`,
+			success_url: `${origin}/my-enrollments`,
 			cancel_url: `${origin}/`,
 			line_items: line_items,
 			mode: "payment",
@@ -89,7 +91,7 @@ export const purchaseCourse = async (req, res) => {
 				purchaseId: newPurchase._id.toString(),
 			},
 		});
-		
+		console.log(session.url);
 		return res.json({ success: true, session_url: session.url });
 	} catch (error) {
 		return res.json({ success: false, message: error.message });
@@ -99,10 +101,10 @@ export const purchaseCourse = async (req, res) => {
 // UPDATE USER COURSE PROGRESS
 export const updateUserCourseProgress = async (req, res) => {
 	try {
-		
+		console.log(req.body)
 		const userId = req.auth().userId;
+		
 		const { courseId,lectureId} = req.body;
-
 		const progressData = await CourseProgress.findOne({ userId, courseId });
 
 		if (progressData) {
@@ -133,8 +135,8 @@ export const updateUserCourseProgress = async (req, res) => {
 export const getUserCourseProgress = async (req, res) => {
 	try {
 		const userId = req.auth().userId;
+		console.log(userId,req.body)
 		const { courseId } = req.body;
-		console.log(userId,courseId)
 		const progressData = await CourseProgress.findOne({ userId, courseId });
 		res.json({ success: true, progressData });
 	} catch (error) {

@@ -109,12 +109,13 @@ export const AppContextProvider = (props) => {
 		// setEnrolledCourses(dummyCourses)
 		try{
 		const token = await getToken();
-		const { data } = await axios.get(
-			backendUrl + "/api/user/enrolled-courses",
+		const { data } = await axios.post(
+			backendUrl + "/api/user/enrolled-courses", {},
 			{
 				headers: { Authorization: `Bearer ${token}` },
 			}
-		);
+			);
+			console.log(data.enrolledCourses)
 		if (data.success) {
 			setEnrolledCourses(data.enrolledCourses.reverse());
 		} else {

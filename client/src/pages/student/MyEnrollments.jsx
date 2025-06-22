@@ -31,11 +31,12 @@ const MyEnrollments = () => {
 						Authorization: `Bearer ${token}`
 					}
 				});
-				
+				console.log(data)
 				let totalLectures = calNumOfLectures(data.progressData);
 				const lectureCompleted = data.progressData ? data.progressData.lectureCompleted.length : 0;
 				return { totalLectures, lectureCompleted };
 			});
+		
 			setProgressData(progressData);
 		} catch (error) {
 			toast.error(error.message);
@@ -45,13 +46,14 @@ const MyEnrollments = () => {
 		if (userData) {
 			fetchUserEnrolledCourses();
 		}
-	}, [userData])
+	}, [userData]);
+
 	useEffect(() => {
 		if (enrolledCourses.length>0) {
 			getCourseProgress();
 		}
 	}, [enrolledCourses]);
- 
+ console.log(enrolledCourses)
 	return (
 		<>
 			<div className="md:px-36 px-8 pt-10">
@@ -95,7 +97,7 @@ const MyEnrollments = () => {
 									</td>
 									<td className="px-4 py-3 max-sm:text-right">
                     <button onClick={() => {
-                      navigate('/player/'+course._id)
+											navigate('/player/' + course._id)
                     }} className="px-3 sm:px-5 py-1.5 sm:py-2 rounded bg-blue-500 max-sm:text-xs text-white">
 											{progressData[idx] && progressData[idx].lectureCompleted==progressData[idx].totalLectures?'Completed':'On Going'}
 										</button>

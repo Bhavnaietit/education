@@ -12,9 +12,8 @@ import axios from "axios";
 
 const Player = () => {
 	const { courseId } = useParams();
-
+      console.log(courseId)
 	const {
-		
 		calChapTime,
 		enrolledCourses,
 		fetchUserEnrolledCourses,
@@ -45,14 +44,9 @@ const Player = () => {
 	const toggleSection = (index) => {
 		setOpenSection((prev) => ({ ...prev, [index]: !prev[index] }));
 	};
-	useEffect(() => {
-		if (enrolledCourses.length > 0) {
-			getCourseData();
-		}
-		
-	}, [enrolledCourses]);
-
+	
 	const markLectureAsCompleted = async (lectureId) => {
+		
 		try {
 			const token = await getToken();
 			const { data } = await axios.post(
@@ -60,7 +54,6 @@ const Player = () => {
 				{ courseId, lectureId },
 				{ headers: { Authorization: `Bearer ${token}` } }
 			);
-			console.log(data)
 
 			if (data.success) {
 				toast.success(data.message);
@@ -68,6 +61,7 @@ const Player = () => {
 				toast.error(data.message);
 			}
 		} catch (error) {
+			console.log(error)
 			toast.error(error.message);
 		}
 	};
@@ -75,9 +69,9 @@ const Player = () => {
 	const getCourseProgress = async () => {
 		try {
 			const token = await getToken();
-			const { data } = await axios.get(
+			const { data } = await axios.post(
 				backendUrl + `/api/user/get-course-progress`,
-				{ courseId },
+				{ courseId }, 
 				{ headers: { Authorization: `Bearer ${token}` } }
 			);
 
@@ -110,9 +104,13 @@ const Player = () => {
 			toast.error(error.message);
 		}
 	};
+	
 	useEffect(() => {
-		getCourseProgress()
-	},[])
+		if (enrolledCourses.length > 0) {
+			getCourseData();
+			getCourseProgress();
+		}
+	}, []);
 
 	return courseData? (
 		<>

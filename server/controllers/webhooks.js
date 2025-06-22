@@ -48,6 +48,7 @@ export const clerkWehooks = async (req, res) => {
 				break;
 		}
 	} catch (error) {
+		console.log(error)
 		res.json({ success: false, message: error.message });
 	}
 };
