@@ -22,7 +22,6 @@ export const AppContextProvider = (props) => {
 	const [userData, setUserData] = useState(null);
 	// fet all corses
 	const fetchAllCourses = async () => {
-		// setAllCourses(dummyCourses);
 		try {
 			const { data } = await axios.get(backendUrl + "/api/course/all");
 			if (data.success) {
@@ -133,7 +132,7 @@ export const AppContextProvider = (props) => {
 	}, []);
 
 	const logToken = async () => {
-		// console.log(await getToken());
+		console.log(await getToken());
 	}
 	useEffect(() => {
 		if (user) {

@@ -2,9 +2,9 @@
   "name": "server",
   "version": "1.0.0",
   "main": "server.js",
-  "type":"module",
+  "type": "module",
   "scripts": {
-   "server": "nodemon server.js",
+    "server": "nodemon server.js",
     "start": "node server.js"
   },
   "keywords": [],
@@ -20,6 +20,7 @@
     "mongoose": "^8.15.1",
     "multer": "^2.0.0",
     "nodemon": "^3.1.10",
+    "razorpay": "^2.9.6",
     "stripe": "^18.2.0",
     "svix": "^1.42.0"
   }

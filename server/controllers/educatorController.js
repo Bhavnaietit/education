@@ -59,6 +59,9 @@ export const getEducatorCourses = async (req, res) => {
 	}
 };
 
+
+
+
 // GET Educator Dshboard data (total Earning,enrolled students ,No. of Courses)
 export const educatorDashboardData = async (req, res) => {
 	try {

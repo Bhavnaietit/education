@@ -1,4 +1,4 @@
-import express from "express";
+import express, { raw } from "express";
 import cors from "cors";
 import "dotenv/config";
 import connectDB from "./configs/mongodb.js";
@@ -30,7 +30,6 @@ app.post('/clerk', express.json(), clerkWehooks);
 app.use('/api/educator', express.json(), educatorRouter);
 app.use('/api/course', express.json(), courseRouter);
 app.use("/api/user", express.json(), userRouter);
-app.post("/stripe", express.json(), stripeWebhooks);
 
 app.listen(PORT, () => {
 	console.log("server started! at port", PORT);

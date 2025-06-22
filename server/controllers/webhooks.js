@@ -7,6 +7,7 @@ import Course from "../models/Course.js";
 
 // API controller o mange aunt with clerk
 export const clerkWehooks = async (req, res) => {
+
 	try {
 		const whook = new Webhook(process.env.CLERK_WEBHOOK_SECRET);
 		await whook.verify(JSON.stringify(req.body), {
@@ -56,10 +57,12 @@ export const clerkWehooks = async (req, res) => {
 
 
 const stripeInstance = new Stripe(process.env.STRIPE_SECRET_KEY);
+
 export const stripeWebhooks = async (req, res) => {
-	const sig = request.headers["stripe-signature"];
+	console.log("inside stripe webhook")
+	const sig = req.headers["stripe-signature"];
 	let event;
-	console.log(event);
+
 	try {
 		event = Stripe.webhooks.constructEvent(
 			req.body,
@@ -95,8 +98,8 @@ export const stripeWebhooks = async (req, res) => {
 			await userData.save();
 
 			purchaseData.status = "completed";
-
 			await purchaseData.save();
+			console.log("success")
 
 			break;
 		}
@@ -112,7 +115,6 @@ export const stripeWebhooks = async (req, res) => {
 		
 			purchaseData.status = "failed";
 			await purchaseData.save();
-
 			break;
 		}
 		// ... handle other event types

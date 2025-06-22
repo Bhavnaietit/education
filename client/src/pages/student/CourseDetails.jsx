@@ -41,8 +41,38 @@ const CourseDetails = () => {
 	const toggleSection = (index) => {
 		setOpenSection((prev) => ({ ...prev, [index]: !prev[index] }));
 	};
-	const enrolledCourse = async () => {
+	// const enrolledCourse = async () => {
+	// 	try {
+	// 		if (!userData) {
+	// 			return toast.warn("Login to Enroll");
+	// 		}
+	// 		if (isEnrolled) {
+	// 			return toast.warn("You already enrolled");
+	// 		}
+			
+
+	// 		const token = await getToken();
+	// 		const { data } = await axios.post(
+	// 			backendUrl + "/api/user/purchase",
+	// 			{ courseId: courseData._id },
+	// 			{ headers: { Authorization: `Bearer ${token}` } }
+	// 		);
+	// 		console.log(data);
+	// 		if (data.success) {
+	// 			const { session_url } = data;
+	// 			window.location.replace(session_url);
 		
+				
+	// 		} else {
+	// 			console.log(userData, data);
+	// 			toast.error(data.message);
+	// 		}
+	// 	} catch (error) {
+	// 		console.log(error)
+	// 		toast.error(error.message);
+	// 	}
+	// };
+	const enrolledCourse = async () => {
 		try {
 			if (!userData) {
 				return toast.warn("Login to Enroll");
@@ -50,26 +80,22 @@ const CourseDetails = () => {
 			if (isEnrolled) {
 				return toast.warn("You already enrolled");
 			}
-			
 
 			const token = await getToken();
-			const { data } = await axios.post(
+			const responseStripe = await axios.post(
 				backendUrl + "/api/user/purchase",
 				{ courseId: courseData._id },
 				{ headers: { Authorization: `Bearer ${token}` } }
 			);
-			console.log(data);
-			if (data.success) {
-				const { session_url } = data;
+			if (responseStripe.data.success) {
+				const { session_url } = responseStripe.data;
 				window.location.replace(session_url);
-		
-				
+			
 			} else {
-				console.log(userData, data);
-				toast.error(data.message);
+				toast.error(responseStripe.data.message);
 			}
 		} catch (error) {
-			console.log(error)
+			console.log(error);
 			toast.error(error.message);
 		}
 	};
@@ -131,9 +157,9 @@ const CourseDetails = () => {
 						</p>
 					</div>
 					<p className="text-sm">
-						Course By {" "}
+						Course By{" "}
 						<span className="text-blue-600 underline">
-							{ courseData.educator && courseData.educator.name }
+							{courseData.educator && courseData.educator.name}
 						</span>
 					</p>
 					<div className="pt-8 text-gray-800">
@@ -225,7 +251,7 @@ const CourseDetails = () => {
 					</div>
 				</div>
 				{/*right-box */}
-				<div className="max-w-corse-card z-10 shadow-custom-card rounded-t md:rounded-none overflow-hidden bg-white min-w[300px] sm:min-w-[420]">
+				<div className="max-w-corse-card z-10 shadow-custom-card rounded-t md:rounded-none overflow-hidden bg-white min-w[250px] sm:min-w-[300]">
 					{playerData ? (
 						<Youtube
 							videoId={playerData.videoId}
@@ -234,10 +260,10 @@ const CourseDetails = () => {
 									autoplay: 1,
 								},
 							}}
-							iframeClassName="w-full aspect-video"
+							iframeClassName="w-full aspect-video flex justify-center items-center"
 						/>
 					) : (
-						<img src={courseData.courseThumbnail}></img>
+						<img src={courseData.courseThumbnail} className="w-full"></img>
 					)}
 					<div className="p-5">
 						<div className="flex items-center gap-2 ">
