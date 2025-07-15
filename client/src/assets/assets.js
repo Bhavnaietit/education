@@ -358,6 +358,7 @@ export const dummyCourses = [
         "__v": 3,
         "courseThumbnail": "https://img.youtube.com/vi/HdLIMoQkXFA/maxresdefault.jpg"
     },
+
     {
         "_id": "605c72efb3f1c2b1f8e4e1ae",
         "courseTitle": "Cybersecurity Basics",
@@ -424,6 +425,7 @@ export const dummyCourses = [
         "__v": 2,
         "courseThumbnail": "https://img.youtube.com/vi/jZFaMEqEqEQ/maxresdefault.jpg"
     },
+
     {
         "_id": "605c72efb3f1c2b1f8e4e1a7",
         "courseTitle": "Web Development Bootcamp",
@@ -490,6 +492,7 @@ export const dummyCourses = [
         "__v": 2,
         "courseThumbnail": "https://img.youtube.com/vi/lpx2zFkapIk/maxresdefault.jpg"
     },
+
     {
         "_id": "605c72efb3f1c2b1f8e4e1ac",
         "courseTitle": "Cloud Computing Essentials",
@@ -555,6 +558,7 @@ export const dummyCourses = [
         "__v": 1,
         "courseThumbnail": "https://img.youtube.com/vi/0yboGn8errU/maxresdefault.jpg"
     },
+
     {
         "_id": "605c72efb3f1c2b1f8e4e1ad",
         "courseTitle": "Data Science with Python",
@@ -628,6 +632,7 @@ export const dummyCourses = [
         "__v": 3,
         "courseThumbnail": "https://img.youtube.com/vi/E4znbZgUWzA/maxresdefault.jpg"
     },
+
     {
         "_id": "605c72efb3f1c2b1f8e4e1aa",
         "courseTitle": "Data Science and Machine Learning",
@@ -693,6 +698,7 @@ export const dummyCourses = [
         "__v": 1,
         "courseThumbnail": "https://img.youtube.com/vi/631lFJdQvoo/maxresdefault.jpg"
     },
+    
     {
         "_id": "605c72efb3f1c2b1f8e4e1ab",
         "courseTitle": "Introduction to Cybersecurity",
